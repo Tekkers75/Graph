@@ -1,5 +1,5 @@
 #pragma once
-//@author Maltseva K.V. 
+//@author Саранчин К.А. 
 
 #include <iostream>
 #include<vector>
