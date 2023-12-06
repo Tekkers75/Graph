@@ -36,21 +36,21 @@ int main() {
     //graph.printGraph();
 
 
-    std::cout << "DFS traversal starting from vertex 0: ";
+    cout << "Обход графа в глубину, начиная с вершины ";
     graph.DFS(0);
-    std::cout << std::endl;
+    cout << endl;
 
-    std::cout << "BFS traversal: ";
+    cout << "Обход графа в ширину: ";
     graph.BFS(0);
-    std::cout << std::endl;
+    cout << endl;
 
 
     int index = graph.findVertexIndex(2);  // Ищем индекс вершины со значением 2
     if (index != -1) {
-        std::cout << "Index of vertex 2: " << index << std::endl;
+        cout << "Индекс вершины 2:  " << index << endl;
     }
     else {
-        std::cout << "Vertex 2 not found" << std::endl;
+        cout << "Вершина 2 не найдена" << endl;
     }
 
     int startNode = 0;
@@ -58,7 +58,7 @@ int main() {
 
     // Выводим кратчайшие расстояния от начальной вершины до всех остальных вершин
     for (int i = 0; i < distances.size(); ++i) {
-        cout << "Shortest distance from node " << startNode << " to node " << i << ": " << distances[i] << endl;
+        cout << "Кратчайшее расстояние от узла " << startNode << " до узла " << i << ": " << distances[i] << endl;
     }
 
     string filename = "graph.graphml";

@@ -14,10 +14,10 @@
 using namespace std;
 
 template <class T>
+//взвешанный ориентированный граф
 class Graph {
 private:
     int numVertices;                    // Количество вершин в графе
-    //int numEdges;                     // Количество ребер в графе
     vector<T> vertices;                 // Вектор вершин графа
     vector<vector<int>> adjMatrix;      // Матрица смежности
 
@@ -28,7 +28,7 @@ public:
         this->numVertices = numVertices;
 
         // Инициализируем матрицу смежности
-        adjMatrix.resize(numVertices, vector<int>(numVertices, 0));\
+        adjMatrix.resize(numVertices, vector<int>(numVertices, 0));
 
         // Инициализируем вектор вершин
         vertices.resize(numVertices);
@@ -47,8 +47,10 @@ public:
 
     // Добавление вершины в граф
     void addVertex() {
-        numVertices++;                        // Увеличиваем количество вершин на 1
-        adjMatrix.resize(numVertices, vector<int>(numVertices, 0));    // Добавляем новую строку в матрицу смежности
+        // Увеличиваем количество вершин на 1
+        numVertices++;              
+        // Добавляем новую строку в матрицу смежности
+        adjMatrix.resize(numVertices, vector<int>(numVertices, 0));     
 
         // Добавляем новую вершину в вектор вершин
         vertices.push_back(numVertices - 1);
@@ -109,9 +111,10 @@ public:
         }
     }
 
+    //Обход в глубину на основе стека
     void DFS(int startVertex) {
-        std::vector<bool> visited(numVertices, false);  // Создаем вектор посещенных вершин, инициализируя все значения как false
-        std::stack<int> stack;  // Создаем стек для хранения вершин
+        vector<bool> visited(numVertices, false);  // Создаем вектор посещенных вершин, инициализируя все значения как false
+        stack<int> stack;  // Создаем стек для хранения вершин
 
         stack.push(startVertex);  // Помещаем начальную вершину в стек
 
@@ -120,7 +123,7 @@ public:
             stack.pop();  // Удаляем вершину из стека
 
             if (!visited[currentVertex]) {  // Если вершина не была посещена
-                std::cout << currentVertex << " ";  // Выводим текущую вершину
+                cout << currentVertex << " ";  // Выводим текущую вершину
                 visited[currentVertex] = true;  // Помечаем вершину как посещенную
 
                 for (int neighbor = 0; neighbor < numVertices; ++neighbor) {  // Проходим по соседним вершинам
@@ -132,9 +135,10 @@ public:
         }
     }
 
+    //Обход в ширину на основе очереди
     void BFS(int startVertex) {
-        std::vector<bool> visited(numVertices, false);  // Создаем вектор посещенных вершин, инициализируя все значения как false
-        std::queue<int> queue;  // Создаем очередь для хранения вершин
+        vector<bool> visited(numVertices, false);  // Создаем вектор посещенных вершин, инициализируя все значения как false
+        queue<int> queue;  // Создаем очередь для хранения вершин
 
         queue.push(startVertex);  // Помещаем начальную вершину в очередь
 
@@ -143,7 +147,7 @@ public:
             queue.pop();  // Удаляем вершину из очереди
 
             if (!visited[currentVertex]) {  // Если вершина не была посещена
-                std::cout << currentVertex << " ";  // Выводим текущую вершину
+                cout << currentVertex << " ";  // Выводим текущую вершину
                 visited[currentVertex] = true;  // Помечаем вершину как посещенную
 
                 for (int neighbor = 0; neighbor < numVertices; neighbor++) {  // Проходим по соседним вершинам
@@ -155,10 +159,11 @@ public:
         }
     }
 
+    // поиск индекса вершины в векторе vertices по значению
     int findVertexIndex(const T& value) const {
-        auto it = std::find(vertices.begin(), vertices.end(), value);
+        auto it = find(vertices.begin(), vertices.end(), value);
         if (it != vertices.end()) {
-            return std::distance(vertices.begin(), it);
+            return distance(vertices.begin(), it);
         }
         return -1;  // Вершина не найдена
     }
@@ -193,14 +198,23 @@ public:
         }
     }
 
+    //Алгоритм Дейкстры
+    //поиск кратчайшего пути от начальной вершины startNode до всех остальных вершин в графе
     vector<int> Dijkstra(int startNode) {
-        vector<int> distances(numVertices, numeric_limits<int>::max()); // Инициализируем расстояния бесконечностью
-        distances[startNode] = 0; // Расстояние до начальной вершины равно 0
+        // Инициализируем расстояния бесконечностью
+        vector<int> distances(numVertices, numeric_limits<int>::max()); 
+        // Расстояние до начальной вершины равно 0
+        distances[startNode] = 0; 
 
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        pq.push(make_pair(0, startNode)); // Добавляем начальную вершину в приоритетную очередь
 
+        // Добавляем начальную вершину в приоритетную очередь, make_pair - используется для создания пары (расстояние, вершина)
+        //  и добавления этой пары в приоритетную очередь
+        pq.push(make_pair(0, startNode)); 
+
+        //выполняем нужное количество итераций, пока приоритетную очередь не пуста
         while (!pq.empty()) {
+            //top - используется для получения ссылки на самую верхнюю пару (расстояние, вершина)
             int currentDistance = pq.top().first;
             int currentNode = pq.top().second;
             pq.pop();
@@ -210,12 +224,21 @@ public:
             }
 
             // Проходим по смежным вершинам
+            // начинается цикл, в котором проходим по всем вершинам, смежным с текущей вершиной currentNode. 
+            // numVertices представляет общее количество вершин в графе.
             for (int neighbor = 0; neighbor < numVertices; ++neighbor) {
+                // получаем вес ребра между текущей вершиной currentNode и смежной вершиной neighbor из матрицы смежности adjMatrix. 
+                // Если вес ребра равен 0, это означает, что между вершинами нет прямого ребра и мы пропускаем эту смежную вершину.
                 int edgeWeight = adjMatrix[currentNode][neighbor];
                 if (edgeWeight != 0) {
+                    //вычисляем новое расстояние distance от начальной вершины до смежной вершины через текущую вершину.
+                    // Суммируем текущее
                     int distance = currentDistance + edgeWeight;
+                    // проверяем, является ли новое расстояние distance меньше, 
+                    // чем уже известное расстояние distances[neighbor] до смежной вершины neighbor.
                     if (distance < distances[neighbor]) {
                         distances[neighbor] = distance;
+                        // добавляем пару (distance, neighbor) в приоритетную очередь 
                         pq.push(make_pair(distance, neighbor));
                     }
                 }
@@ -225,6 +248,7 @@ public:
         return distances;
     }
 
+    /// Вывод графа в файл .graphml
     void exportToGraphML(const string& filename) {
         ofstream outFile(filename);
         if (outFile.is_open()) {
@@ -261,10 +285,10 @@ public:
             outFile << "</graphml>\n";
 
             outFile.close();
-            cout << "Graph exported to " << filename << " in GraphML format." << endl;
+            cout << "Граф экспортирован в файл " << filename << " в формате GraphML" << endl;
         }
         else {
-            cout << "Failed to export graph to " << filename << "." << endl;
+            cout << "Не удалось экспортировать граф в файл " << filename << "." << endl;
         }
     }
    
