@@ -21,66 +21,48 @@ int main() {
     // Вывод графа
     graph.printGraph();
 
-    // Удаление вершины
-    graph.removeVertex(2);
+    //// Удаление вершины
+    //graph.removeVertex(2);
 
-    // Вывод графа после удаления вершины
-    std::cout << "После удаления вершины:" << std::endl;
-    graph.printGraph();
+    //// Вывод графа после удаления вершины
+    //std::cout << "После удаления вершины:" << std::endl;
+    //graph.printGraph();
 
-    // Удаление ребра
-    graph.removeEdge(0, 1);
+    //// Удаление ребра
+    //graph.removeEdge(0, 1);
 
-    // Вывод графа после удаления ребра
-    std::cout << "После удаления ребра:" << std::endl;
-    graph.printGraph();
-
-
-
-    //try {
-    //    // Создаем граф
-    //    WeightedGraph<int> graph(10);
-    //    graph.addVertex(0);
-    //    graph.addVertex(1);
-    //    graph.addVertex(2);
-    //    graph.addVertex(3);
-    //    // Добавляем ребра с весами
-    //    graph.addEdge(0, 1, -2);
-    //    graph.addEdge(1, 0, 6);
-    //    graph.addEdge(0, 2, 4);
-    //    graph.addEdge(1, 3, 1);
-    //    graph.addEdge(2, 3, 3);
-
-    //    graph.addVertex(4);
-    //    graph.addEdge(4, 4, 9);
-    //    cout << "Обход графа в глубину " << endl;
-    //    graph.DepthFirst(0);
-    //    cout << "Обход графа в ширину " << endl;
-    //    graph.BreadthFirst(0);
-    //    graph.printGraph();
-    //    // Удаляем ребро между вершинами 
-    //    graph.removeEdge(0, 4);
-    //    graph.removeVertex(2);
-    //    graph.printGraph();
-    //    graph.dijkstrasAlgorithm(0);
+    //// Вывод графа после удаления ребра
+    //std::cout << "После удаления ребра:" << std::endl;
+    //graph.printGraph();
 
 
-    //}
-    //catch (const invalid_argument& e) {
-    //    // Обработка исключения
-    //    cout << "Ошибка: " << e.what() << endl;
-    //}
+    std::cout << "DFS traversal starting from vertex 0: ";
+    graph.DFS(0);
+    std::cout << std::endl;
 
-    /*cout << "Тесты" << endl;
-    testAddVertex();
-    testAddEdge();
-    testRemoveEdge();
-    testGetWeight();
-    testRemoveVertex();
-    testGetNumVertices();
-    testNumEdges();
-    testBreadthFirst();
-    testDephtFirst();*/
+    std::cout << "BFS traversal: ";
+    graph.BFS(0);
+    std::cout << std::endl;
+
+
+    int index = graph.findVertexIndex(2);  // Ищем индекс вершины со значением 2
+    if (index != -1) {
+        std::cout << "Index of vertex 2: " << index << std::endl;
+    }
+    else {
+        std::cout << "Vertex 2 not found" << std::endl;
+    }
+
+    int startNode = 0;
+    vector<int> distances = graph.Dijkstra(startNode);
+
+    // Выводим кратчайшие расстояния от начальной вершины до всех остальных вершин
+    for (int i = 0; i < distances.size(); ++i) {
+        cout << "Shortest distance from node " << startNode << " to node " << i << ": " << distances[i] << endl;
+    }
+
+    string filename = "graph.graphml";
+    graph.exportToGraphML(filename);
 
 
     return 0;
