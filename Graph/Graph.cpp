@@ -2,7 +2,8 @@
 
 #include <iostream>
 #include "Graph.h"
-//#include "TestGraph.h"
+
+#include "Test.h"
 
 int main() {
 
@@ -64,6 +65,17 @@ int main() {
     string filename = "graph.graphml";
     graph.exportToGraphML(filename);
 
+    testAddEdge();
+    testAddVertex();
+    testRemoveVertex();
+    testRemoveEdge();
+    testGetNumVertices();
+    testGetVertices();
+    testGetWeight();
+    testFindVertexIndex();
+    testDFS();
+    testBFS();
+    testDijkstra();
 
     return 0;
 }
